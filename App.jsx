@@ -1,0 +1,4 @@
+import {Routes,Route,Navigate} from 'react-router-dom'; import {AuthProvider,useAuth} from './context/AuthContext';
+import Login from './pages/Login'; import Register from './pages/Register'; import Dashboard from './pages/Dashboard'; import Admin from './pages/Admin'; import Navbar from './components/Navbar';
+function Private({children,admin=false}){const {user}=useAuth(); if(!user)return <Navigate to="/login"/>; if(admin&&user.role!=='ADMIN')return <Navigate to="/"/>; return children}
+export default function App(){return <AuthProvider><Routes><Route path="/login" element={<Login/>}/><Route path="/register" element={<Register/>}/><Route path="/" element={<Private><><Navbar/><Dashboard/></></Private>}/><Route path="/admin" element={<Private admin><><Navbar/><Admin/></></Private>}/><Route path="*" element={<Navigate to="/"/>}/></Routes></AuthProvider>}
